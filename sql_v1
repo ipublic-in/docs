@@ -1,0 +1,87 @@
+CREATE TABLE category (
+  id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE creator (
+  id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE media (
+  id INT NOT NULL AUTO_INCREMENT,
+  title VARCHAR(255) NOT NULL,
+  description TEXT NOT NULL,
+  file_url VARCHAR(255) NOT NULL,
+  thumbnail_url VARCHAR(255) NOT NULL,
+  category_id INT NOT NULL,
+  creator_id INT NOT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  FOREIGN KEY (category_id) REFERENCES category(id),
+  FOREIGN KEY (creator_id) REFERENCES creator(id)
+);
+
+CREATE TABLE user (
+  id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  role VARCHAR(255) NOT NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE rating (
+  id INT NOT NULL AUTO_INCREMENT,
+  value INT NOT NULL,
+  media_id INT NOT NULL,
+  user_id INT NOT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  FOREIGN KEY (media_id) REFERENCES media(id),
+  FOREIGN KEY (user_id) REFERENCES user(id)
+);
+
+CREATE TABLE review (
+  id INT NOT NULL AUTO_INCREMENT,
+  content TEXT NOT NULL,
+  media_id INT NOT NULL,
+  user_id INT NOT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  FOREIGN KEY (media_id) REFERENCES media(id),
+  FOREIGN KEY (user_id) REFERENCES user(id)
+);
+
+CREATE TABLE transaction (
+  id INT NOT NULL AUTO_INCREMENT,
+  amount DECIMAL(10,2) NOT NULL,
+  media_id INT NOT NULL,
+  user_id INT NOT NULL,
+  payment_method VARCHAR(255) NOT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  FOREIGN KEY (media_id) REFERENCES media(id),
+  FOREIGN KEY (user_id) REFERENCES user(id)
+);
+
+CREATE TABLE activity (
+  id INT NOT NULL AUTO_INCREMENT,
+  user_id INT NOT NULL,
+  media_id INT NOT NULL,
+  type VARCHAR(255) NOT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  FOREIGN KEY (user_id) REFERENCES user(id),
+  FOREIGN KEY (media_id) REFERENCES media(id)
+);
+
+CREATE TABLE report (
+  id INT NOT NULL AUTO_INCREMENT,
+  type VARCHAR(255) NOT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id)
+);
